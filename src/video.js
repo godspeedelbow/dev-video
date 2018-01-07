@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactPlayer from 'react-player';
-import { Card, Image, Icon, Grid, Header, Label } from 'semantic-ui-react';
+import { Card, Icon, Label } from 'semantic-ui-react';
 
 const PLAYER_RATIO = 640 / 360;
 const PLAYER_WIDTH = 400; // beware of parent's grid column width
@@ -36,7 +36,7 @@ const Video = ({ video }) => (
             target="_blank"
             image
           >
-            <img src={video.speaker.image} />
+            <img src={video.speaker.image} alt={video.speaker.fullName} />
             {video.speaker.fullName}
           </Label>
           <Label
@@ -45,7 +45,7 @@ const Video = ({ video }) => (
             target="_blank"
             image
           >
-            <img src={video.event.logo} />
+            <img src={video.event.logo} alt={video.event.title} />
             {video.event.title}
           </Label>
         </p>
