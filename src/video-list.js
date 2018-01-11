@@ -1,8 +1,7 @@
 import React from 'react';
 import Video from './video';
 
-import { videos } from './data';
-
-const VideoList = () => videos.map(video => <Video video={video} />);
+const VideoList = ({ videos }) =>
+  videos.map(video => <Video key={video.name} video={video} />);
 
 export default VideoList;
