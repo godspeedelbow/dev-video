@@ -1,11 +1,15 @@
 import React from 'react';
-import VideoList from './video-list';
+import gql from 'graphql-tag';
+
+import { graphql } from 'react-apollo';
+import { fragment } from './video';
 
 import { Header } from 'semantic-ui-react';
+import VideoList from './video-list';
 
-import { videos } from './data';
+const Home = props => {
+  const { data: { videos = [] } } = props;
 
-const Home = () => {
   return (
     <div>
       <Header as="h1">Videos by/for developers</Header>
@@ -13,4 +17,25 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+
+const query = gql`
+  query {
+    videos {
+      ...VideoEntry
+      event {
+        name
+        title
+        logo
+      }
+      technologies {
+        name
+        title
+      }
+    }
+  }
+  ${fragment}
+`;
+
+const HomeContainer = graphql(query)(Home);
+
+export default HomeContainer;

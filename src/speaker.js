@@ -1,16 +1,19 @@
 import React from 'react';
+import { compose, withProps } from 'recompose';
+
+import gql from 'graphql-tag';
+
+import { graphql } from 'react-apollo';
+import { fragment } from './video';
 
 import { Header, Image, Card } from 'semantic-ui-react';
 import VideoList from './video-list';
 
-import { getSpeaker, videosBySpeaker } from './data';
-
 import { PLAYER_WIDTH } from './constants';
 
-const Speaker = ({ match }) => {
-  const name = match.params.name;
-  const speaker = getSpeaker(name);
-  const videos = videosBySpeaker(name);
+const Speaker = props => {
+  const { data: { speaker = {} } } = props;
+
   return (
     <div>
       <Header as="h1">
@@ -28,8 +31,34 @@ const Speaker = ({ match }) => {
           </Card.Description>
         </Card.Content>
       </Card>
-      <VideoList videos={videos} />
+      <VideoList videos={speaker.videos} />
     </div>
   );
 };
-export default Speaker;
+
+// TODO: fix this, copy pasted from home.js...
+const query = gql`
+  query {
+    speaker(name: "lee-byron") {
+      ...VideoEntry
+      event {
+        name
+        title
+        logo
+      }
+      technologies {
+        name
+        title
+      }
+    }
+  }
+  ${fragment}
+`;
+
+const SpeakerContainer = graphql(query)(Speaker);
+
+export default SpeakerContainer;
+
+function getSpeaker(props) {
+  return props.match.params.name;
+}

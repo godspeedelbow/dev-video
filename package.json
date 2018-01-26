@@ -4,16 +4,21 @@
   "homepage": "http://godspeedelbow.github.io/dev-video",
   "private": true,
   "dependencies": {
+    "apollo-client-preset": "^1.0.6",
     "gh-pages": "^1.1.0",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
     "lodash": "^4.17.4",
     "prettier": "^1.9.2",
     "react": "^16.2.0",
+    "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",
     "react-player": "^0.25.3",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "recompose": "^0.26.0",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1"
   },
@@ -27,7 +32,10 @@
     "deploy": "gh-pages -d build"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": ["prettier --single-quote --write", "git add"]
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "prettier-eslint": "^8.7.0"

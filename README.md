@@ -10,6 +10,9 @@ the best developer videos
 
 ### short term
 
+* [ ] implement graphql videos by speaker
+* [ ] implement graphql videos by event
+* [ ] implement graphql videos by technology
 * [ ] tag => tech and add version
 * [ ] make year a propery of event
 * [ ] use styled-components

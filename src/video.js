@@ -3,22 +3,19 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import { Card, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { getSpeaker, getEvent, getTech } from './data';
 
 import { PLAYER_WIDTH, PLAYER_HEIGHT } from './constants';
 
-const Video = ({ video }) => {
-  const speaker = getSpeaker(video.speaker);
-  const event = getEvent(video.event);
-  const tech = video.tech.map(getTech);
+import gql from 'graphql-tag';
 
+const Video = ({ video }) => {
   return (
-    <Card style={{ width: PLAYER_WIDTH }}>
+    <Card style={{ width: PLAYER_WIDTH }} key={video.name}>
       <ReactPlayer
         width={PLAYER_WIDTH}
         height={PLAYER_HEIGHT}
         controls
-        url={video.source.url}
+        url={video.source}
       />
       <Card.Content>
         <Card.Header>
@@ -33,24 +30,26 @@ const Video = ({ video }) => {
             {video.duration}
           </small>
         </Card.Header>
-        <Card.Meta>{prettyDate(video.date)}</Card.Meta>
+        <Card.Meta>{prettyDate(video.date || new Date())}</Card.Meta>
         <Card.Description>
           <p>
-            <Link to={`/speaker/${speaker.name}`}>
+            <Link to={`/speaker/${video.speaker.name}`} key="speaker">
               <Label as="span" style={{ marginLeft: 3 }} image>
-                <img src={speaker.image} alt={speaker.fullName} />
-                {speaker.fullName}
+                <img src={video.speaker.image} alt={video.speaker.fullName} />
+                {video.speaker.fullName}
               </Label>
             </Link>
-            <Link to={`/event/${event.name}`}>
+            <Link to={`/event/${video.event.name}`} key="event">
               <Label as="span" style={{ marginLeft: 3 }} image>
-                <img src={event.logo} alt={event.title} />
-                {event.title}
+                {video.event.logo && (
+                  <img src={video.event.logo} alt={video.event.title} />
+                )}
+                {video.event.title}
               </Label>
             </Link>
           </p>
           <p>
-            {tech.map(tech => (
+            {video.technologies.map(tech => (
               <Link to={`/tech/${tech.name}`} key={tech.name}>
                 <Label as="span" style={{ marginLeft: 3 }}>
                   {tech.title}
@@ -71,6 +70,20 @@ const Video = ({ video }) => {
 };
 
 export default Video;
+
+export const fragment = gql`
+  fragment VideoEntry on video {
+    name
+    title
+    duration
+    source
+    speaker {
+      name
+      fullName
+      image
+    }
+  }
+`;
 
 const months = [
   'January',
